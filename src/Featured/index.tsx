@@ -40,14 +40,14 @@ const Featured = () => {
       let params = new URLSearchParams(location.search);
       const q = params.get('q');
       snippetResp = await searchSnippets(q || '');
-      const groupedSnippets = filterArray(snippetResp, 'language');
-      groupedLanguages = Object.keys(groupedSnippets).map((k) => ({
-        language: k,
-        count: groupedSnippets[k].length,
-      }));
     } else {
       snippetResp = await getSnippets();
     }
+    const groupedSnippets = filterArray(snippetResp, 'language');
+    groupedLanguages = Object.keys(groupedSnippets).map((k) => ({
+      language: k,
+      count: groupedSnippets[k].length,
+    }));
     setSnippets(snippetResp);
     setLanguages(groupedLanguages);
     setPageLoading(false);
@@ -63,41 +63,38 @@ const Featured = () => {
 
   return (
     <div className={styles.container}>
-      {location.search ? (
-        <div>
-          <h2>{displayedSnips.length} results found</h2>
-          <div className={styles.languagesCount}>
-            {languages.map((lang) => (
-              <div
-                className={styles.badge}
-                onClick={() => setSelectedLanguage(lang.language)}
-                key={lang.language}
-              >
-                <Badge
-                  style={{
-                    backgroundColor:
-                      lang.language === selectedLanguage
-                        ? '#52c41a'
-                        : '#ff4d4f',
-                  }}
-                  key={lang.language}
-                  count={`${lang.language} ${lang.count}`}
-                />
-              </div>
-            ))}
+      <div>
+        <h2>
+          {location.search ? displayedSnips.length : snippets.length}
+          {location.search
+            ? ` result${displayedSnips.length == 1 ? '' : 's'} found`
+            : ` featured review${snippets.length == 1 ? '' : 's'}`}
+        </h2>
+        <div className={styles.languagesCount}>
+          {languages.map((lang) => (
             <div
-              onClick={() => setSelectedLanguage('')}
               className={styles.badge}
+              onClick={() => setSelectedLanguage(lang.language)}
+              key={lang.language}
             >
               <Badge
-                style={{ backgroundColor: '#000000' }}
-                count={`reset`}
-              ></Badge>
+                style={{
+                  backgroundColor:
+                    lang.language === selectedLanguage ? '#52c41a' : '#ff4d4f',
+                }}
+                key={lang.language}
+                count={`${lang.language} ${lang.count}`}
+              />
             </div>
+          ))}
+          <div onClick={() => setSelectedLanguage('')} className={styles.badge}>
+            <Badge
+              style={{ backgroundColor: '#000000' }}
+              count={`reset`}
+            ></Badge>
           </div>
         </div>
-      ) : //todo: add code for result no + language filter for featured
-      null}
+      </div>
 
       <List
         grid={{

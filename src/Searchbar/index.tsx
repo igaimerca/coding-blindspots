@@ -50,7 +50,6 @@ const reducer = (state: State, action: Action): State => {
 
 export const Searchbar = () => {
   let history = useHistory();
-  console.log(`location`, location);
   const resetToHome = (q: string) => {
     history.push(`/?q=${q}`);
   };
@@ -61,7 +60,6 @@ export const Searchbar = () => {
   const handleOnSearch = async () => {
     try {
       resetToHome(state.searchInput);
-
       dispatch({
         type: 'submitSearchInputSuccess',
         payload: 'Submitted!',
@@ -75,6 +73,7 @@ export const Searchbar = () => {
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
+    //if enter key is pressed, run handleOnSearch()
     const enterKey = 13;
     if (event.keyCode === enterKey || event.which === enterKey) {
       handleOnSearch();
@@ -89,12 +88,6 @@ export const Searchbar = () => {
         type: 'submitSearchInput',
         payload: value,
       });
-      // if (!value) {
-      //   setPageLoading(true);
-      //   // const snippets = await getSnippets();
-      //   setSnippets(snippets);
-      //   setPageLoading(false);
-      // }
     };
 
   return (
