@@ -85,7 +85,7 @@ const AppHeader = ({ location: { pathname } }: AppHeader) => {
           <Menu.Item key="5" className="menu-waitlist">
             <Link to="/waitlist">
               <MailOutlined />
-              Waitlist
+              Join Waitlist
             </Link>
           </Menu.Item>
         </Menu>

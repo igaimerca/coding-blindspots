@@ -31,6 +31,9 @@ const About = () => {
                <li><a href="https://github.com/flozia"> https://github.com/flozia </a></li>
                <li><a href="https://github.com/Muhammad-Tahir-S"> https://github.com/Muhammad-Tahir-S </a></li>
             </ul> 
+        If you are looking for a job, then you should go over code posted by others and study the comments on them. 
+        If you are a hiring manager, please leave post some of your favourite interview questions and comments on some solutions that you really liked. 
+        Tell your friends that your next great hire will come from Interviewblindspots.com !
         </div> 
 
         

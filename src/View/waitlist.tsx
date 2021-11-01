@@ -228,7 +228,7 @@ export const Waitlist = () => {
         noValidate autoComplete="off"
         >
       <Card className={classes.card}>
-        <CardHeader className={classes.header} title="We are developing a code review tool. Here is a sample. Enter email here if you want us to keep you updated."
+        <CardHeader className={classes.header} title="We are developing a code review site for candidates interviewing in software companies like Google, Apple, Netflix etc.  For example, visit out home page at https://www.interviewblindspots.com/waitlist. Enter your contact information here if you want us to keep you updated."
         titleTypographyProps={{variant:'subtitle1' }}
         />
         <CardContent>

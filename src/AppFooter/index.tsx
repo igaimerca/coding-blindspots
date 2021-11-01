@@ -32,6 +32,9 @@ const AppFooter = () => (
           <a href="/public">Reviews</a>
         </li>
         <li>
+          <a href="/badinterviewer">Are you a good interviewer?</a>
+        </li>
+        <li>
           <a href="/public">Embed reviews on your site</a>
         </li>
       </ul>
