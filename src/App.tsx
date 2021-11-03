@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { hot } from 'react-hot-loader/root';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import classNames from 'classnames';
@@ -19,54 +19,51 @@ import { MobileWarning } from './MobileWarning/index';
 import { Waitlist } from './View/Waitlist';
 
 const App = () => {
-  const [showMobileWarning, setShowMobileWarning] = useState<boolean>(false)
+  const [showMobileWarning, setShowMobileWarning] = useState<boolean>(false);
 
-useEffect(() => {
-  const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
-  let visitedBefore = sessionStorage.getItem('isNewSession');
-  if(isMobile && !visitedBefore) 
-    setShowMobileWarning(true)
-}, [])
+  useEffect(() => {
+    const isMobile = window.matchMedia(
+      'only screen and (max-width: 760px)'
+    ).matches;
+    let visitedBefore = sessionStorage.getItem('isNewSession');
+    if (isMobile && !visitedBefore) setShowMobileWarning(true);
+  }, []);
 
-console.log("inside src/App.tsx");
+  console.log('inside src/App.tsx');
 
-    { if (showMobileWarning == true) {
-      return(
-      <MobileWarning
-      setShowMobileWarning={setShowMobileWarning}
-      />
-      )} 
-    
-    else {
-      return(
-      <>
-      <StateProvider>
-        <Router>
-          <Layout className={classNames('Layout', styles.layout)}>
-            <Header>
-              <AppHeader  />
-            </Header>
-            <Content className={styles.content}>
-              <Switch>
-                <Route path="/public" component={Featured} />
-                <Route path="/create" component={Submission} />
-                <Route path="/review" component={Review} />
-                <Route path="/waitlist" component={Waitlist} />
-                <Route path="/about" component={About} /> 
-                <Route path="/login" component={Login} />
-                <Route path="/logout" component={Logout} />
-                <Route path="sitemap.xml" />
-                <Route path="*" component={Featured} />
-              </Switch>
-            </Content>
-            <Footer>
-              <AppFooter />
-            </Footer>
-          </Layout>
-        </Router>
-      </StateProvider>
-      </>
-    )
+  {
+    if (showMobileWarning == true) {
+      return <MobileWarning setShowMobileWarning={setShowMobileWarning} />;
+    } else {
+      return (
+        <>
+          <StateProvider>
+            <Router>
+              <Layout className={classNames('Layout', styles.layout)}>
+                <Header>
+                  <AppHeader />
+                </Header>
+                <Content className={styles.content}>
+                  <Switch>
+                    <Route path="/public" component={Featured} />
+                    <Route path="/create" component={Submission} />
+                    <Route path="/review" component={Review} />
+                    <Route path="/waitlist" component={Waitlist} />
+                    <Route path="/about" component={About} />
+                    <Route path="/login" component={Login} />
+                    <Route path="/logout" component={Logout} />
+                    <Route path="/sitemap.xml" />
+                    <Route path="*" component={Featured} />
+                  </Switch>
+                </Content>
+                <Footer>
+                  <AppFooter />
+                </Footer>
+              </Layout>
+            </Router>
+          </StateProvider>
+        </>
+      );
     }
   }
 };

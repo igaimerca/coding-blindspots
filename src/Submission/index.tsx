@@ -22,7 +22,7 @@ const Submission = () => {
   const [language, setLanguage] = useState<Language>(Language.JAVASCRIPT);
   const [submitting, setSubmitting] = useState(false);
 
-  console.log("inside src/Submission/index.tsx");
+  console.log('inside src/Submission/index.tsx');
   const handleSubmission = (payload: Snippet) => {
     const { title, text } = payload;
     let parsedText = JSON.parse(text);
@@ -56,49 +56,43 @@ const Submission = () => {
       .catch(() => setSubmitting(false));
   };
 
-
-  //Show Login page if not logged in. 
+  //Show Login page if not logged in.
   const cookies = new Cookies();
-  const userCookie = (cookies.get('user')); // Pacman
-  console.log("in Submission/index.tsx cookie is " + userCookie);
+  const userCookie = cookies.get('user'); // Pacman
+  console.log('in Submission/index.tsx cookie is ' + userCookie);
   if (userCookie == null) {
-      return (
-        <div className={styles.container}>
-          <h2 className={styles.heading}>
-          </h2>
-          <Login />
-       </div>
-     )
-   }
+    return (
+      <div className={styles.container}>
+        <h2 className={styles.heading}></h2>
+        <Login />
+      </div>
+    );
+  }
 
   return (
     <>
       <div className={styles.container}>
         <div className={styles.editorContainer}>
-
           <div className={styles.editorContainerColumnLeft}>
             <div className={styles.editorContainerInput}>
-              <span className={styles.secondaryHeading}>
-                Title
-              </span>
+              <span className={styles.secondaryHeading}>Title</span>
               <Input
                 onChange={(title) => setTitle(title.currentTarget.value)}
                 placeholder="Choose a short descriptive title"
               />
             </div>
             <div className={styles.editorContainerInput}>
-              <span className={styles.secondaryHeading}>
-                Description
-              </span>
+              <span className={styles.secondaryHeading}>Description</span>
               <TextArea
-                onChange={(description) => setPosition(description.currentTarget.value)}
-                placeholder="Describe your question here" rows={5}
+                onChange={(description) =>
+                  setPosition(description.currentTarget.value)
+                }
+                placeholder="Describe your question here"
+                rows={5}
               />
             </div>
             <div className={styles.editor}>
-              <span className={styles.secondaryHeading}>
-                Solution
-              </span>
+              <span className={styles.secondaryHeading}>Solution</span>
               <Editor
                 text={text}
                 language={language}
@@ -112,9 +106,7 @@ const Submission = () => {
 
           <div className={styles.editorContainerColumnRight}>
             <div className={styles.editorContainerInput}>
-              <span className={styles.secondaryHeading}>
-                Language
-              </span>
+              <span className={styles.secondaryHeading}>Language</span>
               <EditorOptions
                 language={language}
                 setLanguage={setLanguage}
@@ -123,22 +115,24 @@ const Submission = () => {
             </div>
             <div className={styles.editorContainerInput}>
               <span className={styles.secondaryHeading}>
-              What position are you interviewing for?
+                What position are you interviewing for?
               </span>
               <Input
-                onChange={(position) => setPosition(position.currentTarget.value)}
+                onChange={(position) =>
+                  setPosition(position.currentTarget.value)
+                }
                 placeholder="e.g. Junior, Senior, Principal …"
                 type="textarea"
               />
             </div>
 
             <p className={styles.info}>
-              In order for us to give you feedback on your code, please ensure that you submit the complete question along with your solution. Submissions with inadequate context will be ignored.
+              In order for us to give you feedback on your code, please ensure
+              that you submit the complete question along with your solution.
+              Submissions with inadequate context will be ignored.
             </p>
 
-            <Tooltip
-              title="Make sure everything is filled out as you intended. You won’t be able to make any changes after submitting the snippet."
-            >
+            <Tooltip title="Make sure everything is filled out as you intended. You won’t be able to make any changes after submitting the snippet.">
               <Button
                 loading={submitting}
                 type="primary"
@@ -155,7 +149,6 @@ const Submission = () => {
             </Tooltip>
           </div>
         </div>
-
       </div>
     </>
   );
