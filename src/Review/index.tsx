@@ -177,12 +177,15 @@ const Review = ({ location }: ReviewProps) => {
             key={JSON.stringify(comments)}
             text={parseIfJson(snippet.text)}
             language={snippet.language}
+            // when user clicks on gutter, display comment widget if user is logged in, or display login modal id user is not logged in
             onGutterClick={userCookie ? addInputLineWidget : showModal}
             // setTimeout required to avoid JS Execution race condition with CodeMirror
             onMount={(cm: any) => setTimeout(() => createCommentWidgets(cm), 0)}
           />
           )
         </div>
+
+        {/* adding modal, as per: https://ant.design/components/modal/ */}
         <div>
           <Modal
             visible={isModalVisible}

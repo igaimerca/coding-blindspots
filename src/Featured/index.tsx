@@ -127,7 +127,8 @@ const Featured = () => {
                     hash: `#${snippet.id}`,
                   }}
                 >
-                  {snippet.comments.length > 0
+                  {/* https://stackoverflow.com/questions/54884488/how-can-i-solve-the-error-ts2532-object-is-possibly-undefined */}
+                  {snippet.comments && snippet.comments?.length > 0
                     ? `View ${snippet.comments?.length} comment${
                         snippet.comments?.length == 1 ? '' : 's'
                       }`
