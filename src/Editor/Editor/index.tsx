@@ -40,6 +40,7 @@ const Editor = ({
         mode: language,
         lineNumbers: true,
         theme: 'elegant',
+        lineWrapping: true,
       }}
     />
   </div>

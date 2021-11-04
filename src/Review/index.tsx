@@ -165,65 +165,39 @@ const Review = ({ location }: ReviewProps) => {
 
   const cookies = new Cookies();
   const userCookie = cookies.get('user');
-  if (userCookie == null) {
-    return (
-      <div className={styles.container}>
-        {statusContainer}
-        <h2 className={styles.heading}>{snippet.title}</h2>
-        <p>Click anywhere on the code and add your review/comments. </p>
+  return (
+    <div className={styles.container}>
+      {statusContainer}
+      <h2 className={styles.heading}>{snippet.title}</h2>
+      <p>Click on any line and add your review/comments. </p>
+      <div>
+        <EditorOptions language={snippet.language} />
+        <div className={styles.editor}>
+          <Editor
+            key={JSON.stringify(comments)}
+            text={parseIfJson(snippet.text)}
+            language={snippet.language}
+            onGutterClick={userCookie ? addInputLineWidget : showModal}
+            // setTimeout required to avoid JS Execution race condition with CodeMirror
+            onMount={(cm: any) => setTimeout(() => createCommentWidgets(cm), 0)}
+          />
+          )
+        </div>
         <div>
-          <EditorOptions language={snippet.language} />
-          <div className={styles.editor}>
-            <Editor
-              key={JSON.stringify(comments)}
-              text={parseIfJson(snippet.text)}
-              language={snippet.language}
-              onGutterClick={showModal}
-              // setTimeout required to avoid JS Execution race condition with CodeMirror
-              onMount={(cm: any) =>
-                setTimeout(() => createCommentWidgets(cm), 0)
-              }
-            />
-          </div>
-          <div>
-            <Modal
-              visible={isModalVisible}
-              onCancel={handleCancel}
-              footer={null}
-              keyboard={true}
-            >
-              <div className={styles.modalContainer}>
-                <Login />
-              </div>
-            </Modal>
-          </div>
+          <Modal
+            visible={isModalVisible}
+            onCancel={handleCancel}
+            footer={null}
+            keyboard={true}
+          >
+            <div className={styles.modalContainer}>
+              <Login />
+            </div>
+          </Modal>
         </div>
       </div>
-    );
-  } else {
-    return (
-      <div className={styles.container}>
-        {statusContainer}
-        <h2 className={styles.heading}>{snippet.title}</h2>
-        <p>Click anywhere on the code and add your review/comments. </p>
-        <div>
-          <EditorOptions language={snippet.language} />
-          <div className={styles.editor}>
-            <Editor
-              key={JSON.stringify(comments)}
-              text={parseIfJson(snippet.text)}
-              language={snippet.language}
-              onCursor={addInputLineWidget}
-              // setTimeout required to avoid JS Execution race condition with CodeMirror
-              onMount={(cm: any) =>
-                setTimeout(() => createCommentWidgets(cm), 0)
-              }
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default Review;

@@ -61,6 +61,9 @@ const Featured = () => {
     ? snippets.filter((s: Snippet) => s.language === selectedLanguage)
     : snippets;
 
+  const inactiveRed = '#ff4d4f';
+  const activeGreen = '#52c41a';
+  const resetBlack = '#000000';
   return (
     <div className={styles.container}>
       <div>
@@ -80,7 +83,9 @@ const Featured = () => {
               <Badge
                 style={{
                   backgroundColor:
-                    lang.language === selectedLanguage ? '#52c41a' : '#ff4d4f',
+                    lang.language === selectedLanguage
+                      ? activeGreen
+                      : inactiveRed,
                 }}
                 key={lang.language}
                 count={`${lang.language} ${lang.count}`}
@@ -89,7 +94,7 @@ const Featured = () => {
           ))}
           <div onClick={() => setSelectedLanguage('')} className={styles.badge}>
             <Badge
-              style={{ backgroundColor: '#000000' }}
+              style={{ backgroundColor: resetBlack }}
               count={`reset`}
             ></Badge>
           </div>
@@ -122,7 +127,11 @@ const Featured = () => {
                     hash: `#${snippet.id}`,
                   }}
                 >
-                  Show review
+                  {snippet.comments.length > 0
+                    ? `View ${snippet.comments?.length} comment${
+                        snippet.comments?.length == 1 ? '' : 's'
+                      }`
+                    : `Click to add comments`}
                 </Link>,
               ]}
             >

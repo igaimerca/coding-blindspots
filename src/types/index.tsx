@@ -12,4 +12,5 @@ export type Snippet = {
   title: string;
   text: string;
   language: Language;
+  comments?: number[];
 };
