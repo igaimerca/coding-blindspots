@@ -48,7 +48,7 @@ const Submission = () => {
           content: (
             <p>
               Thank you for submitting your snippet. Your submission ID is {id}.
-              To view your submission, click <a href={`/view#${id}`}>here.</a>
+              To view your submission, click <a href={`/review#${id}`}>here.</a>
             </p>
           ),
         });
@@ -121,7 +121,7 @@ const Submission = () => {
                 onChange={(position) =>
                   setPosition(position.currentTarget.value)
                 }
-                placeholder="e.g. Junior, Senior, Principal …"
+                placeholder="e.g. Junior, Senior, Principal Engineer…"
                 type="textarea"
               />
             </div>
@@ -131,6 +131,7 @@ const Submission = () => {
               that you submit the complete question along with your solution.
               Submissions with inadequate context will be ignored.
             </p>
+
 
             <Tooltip title="Make sure everything is filled out as you intended. You won’t be able to make any changes after submitting the snippet.">
               <Button
@@ -144,7 +145,7 @@ const Submission = () => {
                   })
                 }
               >
-                Submit snippet
+                Submit your code 
               </Button>
             </Tooltip>
           </div>
