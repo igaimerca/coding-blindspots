@@ -7,7 +7,7 @@
   "author": "Bowei Han",
   "license": "ISC",
   "scripts": {
-    "test": "node test.js",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@antd)/\"",
     "clean": "rm -rf ./dist",
     "build-dev": "npm run clean && webpack -d --mode development",
     "build-prod": "npm run clean && webpack -p --mode production",
@@ -40,7 +40,9 @@
     "react-media": "^1.10.0",
     "react-redux": "^7.2.6",
     "react-router-dom": "^5.1.2",
+    "react-scripts": "^4.0.3",
     "react-select": "^4.3.1",
+    "react-share": "^4.4.0",
     "react-spinners": "^0.8.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",

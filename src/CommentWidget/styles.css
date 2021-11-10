@@ -4,5 +4,9 @@
 }
 
 .commentAnchor {
-    max-width: 500px;
+  max-width: 500px;
+}
+
+.socialsShare {
+  margin-top: 7px;
 }

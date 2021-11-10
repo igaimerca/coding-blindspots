@@ -12,11 +12,7 @@
     "allowJs": true,
     "jsx": "react",
     "skipLibCheck": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
@@ -24,8 +20,5 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": [
-    "./src/**/*",
-    "test.js"
-  ]
+  "include": ["./src/**/*", "test.js"]
 }

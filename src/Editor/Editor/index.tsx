@@ -17,6 +17,7 @@ interface EditorProps {
 }
 
 console.log('inside src/Editor/Editor/index.tsx');
+
 const Editor = ({
   text,
   language,

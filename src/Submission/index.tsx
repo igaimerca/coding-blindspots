@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Tooltip, Button, Input, Modal, message } from 'antd';
-import { QuestionCircleTwoTone } from '@ant-design/icons';
 import { Editor, EditorOptions, Language } from '../Editor';
 import RestClient from '../shared/rest';
 import { Snippet } from '../types';
@@ -132,7 +131,6 @@ const Submission = () => {
               Submissions with inadequate context will be ignored.
             </p>
 
-
             <Tooltip title="Make sure everything is filled out as you intended. You won’t be able to make any changes after submitting the snippet.">
               <Button
                 loading={submitting}
@@ -145,7 +143,7 @@ const Submission = () => {
                   })
                 }
               >
-                Submit your code 
+                Submit your code
               </Button>
             </Tooltip>
           </div>

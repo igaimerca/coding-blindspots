@@ -18,6 +18,8 @@ import Cookies from 'universal-cookie';
 import Login from '../View/login';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 import { Spin } from 'antd';
+import { useContext } from 'react';
+import { store } from '../store';
 
 const converter = new Showdown.Converter({
   tables: true,
@@ -35,6 +37,11 @@ interface ReviewProps {
 const widgets: any = [];
 
 const Review = ({ location }: ReviewProps) => {
+  const storeContext = useContext(store);
+  const {
+    isToggled: { data: isToggled, setIsToggled },
+  } = storeContext;
+
   const [loaded, setLoaded] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -44,6 +51,11 @@ const Review = ({ location }: ReviewProps) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const ToggleView = () => {
+    setIsToggled(!isToggled);
+    console.log(`isToggled`, isToggled);
   };
 
   const [snippet, setSnippet] = useState<Snippet>();
@@ -67,6 +79,9 @@ const Review = ({ location }: ReviewProps) => {
 
   const createCommentWidgets = (cm: any) => {
     comments?.forEach((comment) => addCommentLineWidget(cm, comment));
+  };
+  const returnNothing = () => {
+    <div>null</div>;
   };
 
   const removeInputWidgets = (cm: any) => {
@@ -170,6 +185,7 @@ const Review = ({ location }: ReviewProps) => {
       {statusContainer}
       <h2 className={styles.heading}>{snippet.title}</h2>
       <p>Click on any line and add your review/comments. </p>
+      <button onClick={() => ToggleView()}>Toggle!!!</button>
       <div>
         <EditorOptions language={snippet.language} />
         <div className={styles.editor}>
