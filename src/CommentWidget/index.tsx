@@ -19,11 +19,12 @@ interface ViewProps {
 
 const CommentWidget = ({ comment }: ViewProps) => {
   console.log('inside src/CommonWidget/index.tsx');
+
   return (
     <div className={styles.commentContainer}>
       <div>
         <ReactMDE
-          className="comment__textarea"
+          className={'comment__textarea'}
           value={comment.text}
           selectedTab={'preview'}
           readOnly
@@ -50,7 +51,8 @@ const CommentWidget = ({ comment }: ViewProps) => {
 
 export const addCommentLineWidget = (cm: any, comment: Comment) => {
   const anchor = document.createElement('div');
-  anchor.className = styles.commentAnchor; //"commentAnchor";
+  anchor.className = styles.commentAnchor;
+  //"commentAnchor";
   ReactDOM.render(<CommentWidget comment={comment} />, anchor);
   cm.addLineWidget(comment.line, anchor);
 };

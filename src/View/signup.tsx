@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 400,
       margin: `${theme.spacing(0)} auto`,
     },
-    loginBtn: {
+    signupBtn: {
       marginTop: theme.spacing(2),
       flexGrow: 1,
     },
@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type State = {
   username: string;
+  email: string;
   password: string;
   isButtonDisabled: boolean;
   helperText: string;
@@ -50,6 +51,7 @@ type State = {
 const initialState: State = {
   username: '',
   password: '',
+  email: '',
   isButtonDisabled: true,
   helperText: '',
   isError: false,
@@ -58,9 +60,10 @@ const initialState: State = {
 type Action =
   | { type: 'setUsername'; payload: string }
   | { type: 'setPassword'; payload: string }
+  | { type: 'setEmail'; payload: string }
   | { type: 'setIsButtonDisabled'; payload: boolean }
-  | { type: 'loginSuccess'; payload: string }
-  | { type: 'loginFailed'; payload: string }
+  | { type: 'signupSuccess'; payload: string }
+  | { type: 'signupFailed'; payload: string }
   | { type: 'setIsError'; payload: boolean };
 
 const reducer = (state: State, action: Action): State => {
@@ -75,13 +78,18 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         password: action.payload,
       };
+    case 'setEmail':
+      return {
+        ...state,
+        email: action.payload,
+      };
     case 'setIsButtonDisabled':
       return {
         ...state,
         isButtonDisabled: action.payload,
       };
-    case 'loginSuccess':
-      console.log('in loginSuccess');
+    case 'signupSuccess':
+      console.log('in signupSuccess');
       console.log(state);
       console.log(action);
       return {
@@ -89,7 +97,7 @@ const reducer = (state: State, action: Action): State => {
         helperText: action.payload,
         isError: false,
       };
-    case 'loginFailed':
+    case 'signupFailed':
       return {
         ...state,
         helperText: action.payload,
@@ -103,13 +111,13 @@ const reducer = (state: State, action: Action): State => {
   }
 };
 
-const Login = () => {
+const Signup = () => {
   const classes = useStyles();
 
   let history = useHistory();
   const goToPreviousPath = () => {
     const pathname = window.location.pathname;
-    if (pathname === '/login') {
+    if (pathname === '/signup') {
       history.go(-1);
     } else {
       history.go(0);
@@ -124,10 +132,9 @@ const Login = () => {
   // }
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  // console.log("inside src/view/login.tsx");
 
   useEffect(() => {
-    if (state.username.trim() && state.password.trim()) {
+    if (state.username.trim() && state.email.trim() && state.password.trim()) {
       dispatch({
         type: 'setIsButtonDisabled',
         payload: false,
@@ -138,21 +145,23 @@ const Login = () => {
         payload: true,
       });
     }
-  }, [state.username, state.password]);
+  }, [state.username, state.password, state.email]);
 
-  const handleLogin = () => {
+  const handleSignup = () => {
     console.log('3 username is ' + state.username);
     console.log('4 password is ' + state.password);
+    console.log('5 email is ' + state.email);
     //cookies.set("user", "gowtham", { path: "/" }); // setting the cookie
 
     var credentials = {
       username: state.username,
       password: state.password,
+      email: state.email,
     };
-    RestClient.post(`/api/v1/token/login`, credentials)
+    RestClient.post(`/api/v1/token/signup`, credentials)
       .then((tokenresponse) => {
         console.log(
-          'response from django login server. Good ' + tokenresponse.auth_token
+          'response from django signup server. Good ' + tokenresponse.auth_token
         );
 
         //This also works.
@@ -164,25 +173,26 @@ const Login = () => {
         console.log(cookies.get('user')); // Pacman
 
         dispatch({
-          type: 'loginSuccess',
-          payload: 'Login Succeeded',
+          type: 'signupSuccess',
+          payload: 'signup Succeeded',
         });
 
-        goToPreviousPath();
+        // goToPreviousPath();
+        // probably redirect to login?
       })
       .catch(() => {
         //setLoaded(true);
         console.log('failedddddd..');
         dispatch({
-          type: 'loginFailed',
-          payload: 'Login Failed',
+          type: 'signupFailed',
+          payload: 'signup Failed',
         });
       });
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.keyCode === 13 || event.which === 13) {
-      state.isButtonDisabled || handleLogin();
+      state.isButtonDisabled || handleSignup();
     }
   };
 
@@ -203,10 +213,19 @@ const Login = () => {
       payload: event.target.value,
     });
   };
+
+  const handleEmailChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    dispatch({
+      type: 'setEmail',
+      payload: event.target.value,
+    });
+  };
   return (
     <form className={classes.container} noValidate autoComplete="off">
       <Card className={classes.card}>
-        <CardHeader className={classes.header} title="Please Login" />
+        <CardHeader className={classes.header} title="Please signup" />
         <CardContent>
           <div>
             <TextField
@@ -218,6 +237,17 @@ const Login = () => {
               placeholder="Username"
               margin="normal"
               onChange={handleUsernameChange}
+              onKeyPress={handleKeyPress}
+            />
+            <TextField
+              error={state.isError}
+              fullWidth
+              id="email"
+              type="email"
+              label="Email"
+              placeholder="Email"
+              margin="normal"
+              onChange={handleEmailChange}
               onKeyPress={handleKeyPress}
             />
             <TextField
@@ -239,20 +269,20 @@ const Login = () => {
             variant="contained"
             size="large"
             color="secondary"
-            className={classes.loginBtn}
-            onClick={handleLogin}
+            className={classes.signupBtn}
+            onClick={handleSignup}
             disabled={state.isButtonDisabled}
           >
-            Login
+            Signup
           </Button>
         </CardActions>
-        <div className={styles.linkToSignUp}>
+        {/* <div className={styles.linkToSignUp}>
           If you don't have an account{' '}
-          <Link href="./signup">Sign up here.</Link>
-        </div>
+          <Link href="./sign-up">Sign up here.</Link>
+        </div> */}
       </Card>
     </form>
   );
 };
 
-export default Login;
+export default Signup;
