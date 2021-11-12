@@ -17,6 +17,7 @@ import styles from './styles.css';
 const { Header, Content, Footer } = Layout;
 import { MobileWarning } from './MobileWarning/index';
 import { Waitlist } from './View/Waitlist';
+import Signup from './View/signup';
 
 const App = () => {
   const [showMobileWarning, setShowMobileWarning] = useState<boolean>(false);
@@ -52,6 +53,7 @@ const App = () => {
                     <Route path="/about" component={About} />
                     <Route path="/login" component={Login} />
                     <Route path="/logout" component={Logout} />
+                    <Route path="/signup" component={Signup} />
                     <Route path="/sitemap.xml" />
                     <Route path="*" component={Featured} />
                   </Switch>

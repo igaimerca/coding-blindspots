@@ -18,6 +18,8 @@ import Cookies from 'universal-cookie';
 import Login from '../View/login';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 import { Spin } from 'antd';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const converter = new Showdown.Converter({
   tables: true,
@@ -32,10 +34,14 @@ interface ReviewProps {
   };
 }
 
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
+
 const widgets: any = [];
 
 const Review = ({ location }: ReviewProps) => {
+  const [isToggled, setIsToggled] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -45,6 +51,14 @@ const Review = ({ location }: ReviewProps) => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  const ToggleView = () => {
+    setIsToggled(!isToggled);
+  };
+
+  function onChange(checked: any) {
+    console.log(`switch to ${checked}`);
+  }
 
   const [snippet, setSnippet] = useState<Snippet>();
   const [comments, setComments] = useState<Array<Comment>>([]);
@@ -170,17 +184,25 @@ const Review = ({ location }: ReviewProps) => {
       {statusContainer}
       <h2 className={styles.heading}>{snippet.title}</h2>
       <p>Click on any line and add your review/comments. </p>
+      <FormControlLabel
+        control={<Switch color="primary" onClick={() => ToggleView()} />}
+        label="Turn reviews off (view only code)"
+      />
       <div>
         <EditorOptions language={snippet.language} />
         <div className={styles.editor}>
           <Editor
-            key={JSON.stringify(comments)}
+            key={`editor_${isToggled}`}
             text={parseIfJson(snippet.text)}
             language={snippet.language}
             // when user clicks on gutter, display comment widget if user is logged in, or display login modal id user is not logged in
             onGutterClick={userCookie ? addInputLineWidget : showModal}
             // setTimeout required to avoid JS Execution race condition with CodeMirror
-            onMount={(cm: any) => setTimeout(() => createCommentWidgets(cm), 0)}
+            onMount={
+              isToggled
+                ? (cm: any) => setTimeout(() => createCommentWidgets(cm), 0)
+                : () => ({})
+            }
           />
           )
         </div>

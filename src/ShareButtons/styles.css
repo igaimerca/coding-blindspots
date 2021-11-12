@@ -1,0 +1,8 @@
+.shareButton {
+  margin-right: 7px;
+  transition: all 0.9s ease-in-out;
+}
+
+.shareButton :hover {
+  transform: scale(1.05);
+}

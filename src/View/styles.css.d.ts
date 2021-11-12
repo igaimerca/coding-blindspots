@@ -7,6 +7,7 @@ interface CssExports {
   'editorContainer': string;
   'heading': string;
   'info': string;
+  'linkToSignUp': string;
   'loadingText': string;
   'statusContainer': string;
   'successText': string;

@@ -122,6 +122,7 @@ const Featured = () => {
               }}
               actions={[
                 <Link
+                  data-testid="commentNumber"
                   to={{
                     pathname: '/review',
                     hash: `#${snippet.id}`,
