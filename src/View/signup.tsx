@@ -165,16 +165,12 @@ const Signup = () => {
   }, [state.username, state.password, state.email]);
 
   const handleSignup = () => {
-    console.log('3 username is ' + state.username);
-    console.log('4 password is ' + state.password);
-    console.log('5 email is ' + state.email);
-
-    let credentials = {
+    var credentials = {
       username: state.username,
       password: state.password,
       email: state.email,
     };
-    RestClient.post(`/api/v1/users`, credentials)
+    RestClient.post(`/api/v1/users/`, credentials)
       .then((response) => {
         console.log('response from django signup server. Good ' + response);
 
