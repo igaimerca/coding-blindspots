@@ -1,6 +1,19 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
 .shareButton {
   margin-right: 7px;
   transition: all 0.9s ease-in-out;
+}
+
+.copyUrl {
+  margin-bottom: 10px;
+}
+
+.copyUrl :hover {
+  cursor: pointer;
 }
 
 .shareButton :hover {

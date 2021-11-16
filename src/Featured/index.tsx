@@ -54,61 +54,71 @@ const Featured = () => {
   };
 
   if (pageLoading) {
-    return <PageLoad text="Loading Snippets…" />;
+    return <PageLoad text="Loading Code Snippets…" />;
   }
+
+  const inactiveRed = '#ff4d4f';
+  const activeGreen = '#52c41a';
+  const resetBlack = '#000000';
+  const filterButtonsJSX = (
+    <div className={styles.languagesCount}>
+      {languages.map((lang) => (
+        <div
+          className={styles.badge}
+          onClick={() => setSelectedLanguage(lang.language)}
+          key={lang.language}
+        >
+          <Badge
+            style={{
+              backgroundColor:
+                lang.language === selectedLanguage ? activeGreen : inactiveRed,
+            }}
+            key={lang.language}
+            count={`${lang.language} ${lang.count}`}
+          />
+        </div>
+      ))}
+      <div onClick={() => setSelectedLanguage('')} className={styles.badge}>
+        <Badge style={{ backgroundColor: resetBlack }} count={`reset`}></Badge>
+      </div>
+    </div>
+  );
 
   const displayedSnips = selectedLanguage
     ? snippets.filter((s: Snippet) => s.language === selectedLanguage)
     : snippets;
 
-  const inactiveRed = '#ff4d4f';
-  const activeGreen = '#52c41a';
-  const resetBlack = '#000000';
+  let snippetsLength;
+  if (location.search) {
+    snippetsLength =
+      displayedSnips.length +
+      ` result${displayedSnips.length == 1 ? '' : 's'} found`;
+  } else {
+    snippetsLength =
+      snippets.length + ` featured review${snippets.length == 1 ? '' : 's'}`;
+  }
+
+  let numSnippetsExtraSmall = 1;
+  let numSnippetsMedium = 2;
+  let numSnippetsLarge = 3;
+  let numSnippetsExtraLarge = 4;
+  let numSnippetsExtraExtraLarge = 4;
+
   return (
     <div className={styles.container}>
       <div>
-        <h2>
-          {location.search ? displayedSnips.length : snippets.length}
-          {location.search
-            ? ` result${displayedSnips.length == 1 ? '' : 's'} found`
-            : ` featured review${snippets.length == 1 ? '' : 's'}`}
-        </h2>
-        <div className={styles.languagesCount}>
-          {languages.map((lang) => (
-            <div
-              className={styles.badge}
-              onClick={() => setSelectedLanguage(lang.language)}
-              key={lang.language}
-            >
-              <Badge
-                style={{
-                  backgroundColor:
-                    lang.language === selectedLanguage
-                      ? activeGreen
-                      : inactiveRed,
-                }}
-                key={lang.language}
-                count={`${lang.language} ${lang.count}`}
-              />
-            </div>
-          ))}
-          <div onClick={() => setSelectedLanguage('')} className={styles.badge}>
-            <Badge
-              style={{ backgroundColor: resetBlack }}
-              count={`reset`}
-            ></Badge>
-          </div>
-        </div>
+        <h2>{snippetsLength}</h2>
+        {filterButtonsJSX}
       </div>
 
       <List
         grid={{
           gutter: 16,
-          xs: 1,
-          md: 2,
-          lg: 3,
-          xl: 4,
-          xxl: 4,
+          xs: numSnippetsExtraSmall,
+          md: numSnippetsMedium,
+          lg: numSnippetsLarge,
+          xl: numSnippetsExtraLarge,
+          xxl: numSnippetsExtraExtraLarge,
         }}
         dataSource={displayedSnips || []}
         renderItem={(snippet: Snippet) => (
@@ -122,6 +132,7 @@ const Featured = () => {
               }}
               actions={[
                 <Link
+                  style={{ fontWeight: 'bolder', color: '#111' }}
                   data-testid="commentNumber"
                   to={{
                     pathname: '/review',
