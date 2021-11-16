@@ -243,6 +243,7 @@ const Signup = () => {
               placeholder="Email"
               margin="normal"
               onChange={handleEmailChange}
+              helperText={state.helperText}
               onKeyPress={handleKeyPress}
             />
             <TextField

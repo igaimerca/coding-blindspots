@@ -38,6 +38,12 @@ const getDefaultSelectedKeys = (pathname: string): Array<string> => {
   return defaultSelectedKeys;
 };
 
+const handleLogout = () => {
+  const cookies = new Cookies();
+  cookies.remove('user');
+  console.log('deleted cookie user'); // Pacman
+};
+
 const AppHeader = ({ location: { pathname } }: AppHeader) => {
   console.log('inside src/AppHeader/index.tsx', pathname);
   const cookies = new Cookies();
@@ -126,8 +132,8 @@ const AppHeader = ({ location: { pathname } }: AppHeader) => {
           <Searchbar />
         </Menu.Item>
         <Menu.Item key="4" className="menu-login">
-          <Link to="/logout">
-            {userCookie + ' '}
+          {userCookie + ' '}
+          <Link onClick={() => handleLogout()} to="/featured">
             <LogoutOutlined />
             Logout
           </Link>

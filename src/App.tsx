@@ -18,6 +18,7 @@ const { Header, Content, Footer } = Layout;
 import { MobileWarning } from './MobileWarning/index';
 import { Waitlist } from './View/Waitlist';
 import Signup from './View/signup';
+// import staticComp from './static/static.js';
 
 const App = () => {
   const [showMobileWarning, setShowMobileWarning] = useState<boolean>(false);
@@ -51,6 +52,7 @@ const App = () => {
                     <Route path="/review" component={Review} />
                     <Route path="/waitlist" component={Waitlist} />
                     <Route path="/about" component={About} />
+                    {/* <Route path="/raghuram.html" component={staticComp} /> */}
                     <Route path="/login" component={Login} />
                     <Route path="/logout" component={Logout} />
                     <Route path="/signup" component={Signup} />
