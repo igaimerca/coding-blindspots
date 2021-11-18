@@ -3,16 +3,17 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import RestClient from '../shared/rest';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
-import { useCookies } from 'react-cookie';
 import Cookies from 'universal-cookie';
 import { useHistory } from 'react-router-dom';
 import styles from './styles.css';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -112,6 +113,29 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const Signup = () => {
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required('Username is required'),
+    //   .min(6, 'Username must be at least 6 characters')
+    //   .max(20, 'Username must not exceed 20 characters'),
+    email: Yup.string().required('Email is required').email('Email is invalid'),
+    password: Yup.string().required('Password is required'),
+    //   .min(6, 'Password must be at least 6 characters')
+    //   .max(40, 'Password must not exceed 40 characters'),
+    // confirmPassword: Yup.string()
+    //   .required('Confirm Password is required')
+    //   .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
+    // acceptTerms: Yup.bool().oneOf([true], 'Accept Terms is required')
+  });
+
+  const {
+    register,
+    // control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
   const classes = useStyles();
 
   let history = useHistory();
@@ -123,13 +147,6 @@ const Signup = () => {
       history.go(0);
     }
   };
-
-  // const [cookies, setCookie] = useCookies(["user"]);
-  // function handleCookie() {
-  //  console.log("about to set cookie");
-  //   setCookie("user", "gowtham", {      path: "/"    });
-  //  console.log("successfully set cookie");
-  // }
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -151,26 +168,15 @@ const Signup = () => {
     console.log('3 username is ' + state.username);
     console.log('4 password is ' + state.password);
     console.log('5 email is ' + state.email);
-    //cookies.set("user", "gowtham", { path: "/" }); // setting the cookie
 
-    var credentials = {
+    let credentials = {
       username: state.username,
       password: state.password,
       email: state.email,
     };
-    RestClient.post(`/api/v1/token/signup`, credentials)
-      .then((tokenresponse) => {
-        console.log(
-          'response from django signup server. Good ' + tokenresponse.auth_token
-        );
-
-        //This also works.
-        // handleCookie();
-
-        //This works fine.
-        const cookies = new Cookies();
-        cookies.set('user', state.username, { path: '/' });
-        console.log(cookies.get('user')); // Pacman
+    RestClient.post(`/api/v1/users`, credentials)
+      .then((response) => {
+        console.log('response from django signup server. Good ' + response);
 
         dispatch({
           type: 'signupSuccess',
@@ -229,36 +235,44 @@ const Signup = () => {
         <CardContent>
           <div>
             <TextField
-              error={state.isError}
+              required
+              //   error={state.isError}
               fullWidth
               id="username"
-              type="email"
+              type="username"
               label="Username"
               placeholder="Username"
               margin="normal"
+              {...register('username')}
+              error={errors.username ? true : false}
               onChange={handleUsernameChange}
               onKeyPress={handleKeyPress}
             />
             <TextField
-              error={state.isError}
+              required
+              //   error={state.isError}
               fullWidth
               id="email"
               type="email"
               label="Email"
               placeholder="Email"
               margin="normal"
+              {...register('email')}
+              error={errors.email ? true : false}
               onChange={handleEmailChange}
-              helperText={state.helperText}
               onKeyPress={handleKeyPress}
             />
             <TextField
-              error={state.isError}
+              required
+              //   error={state.isError}
               fullWidth
               id="password"
               type="password"
               label="Password"
               placeholder="Password"
               margin="normal"
+              {...register('password')}
+              error={errors.password ? true : false}
               helperText={state.helperText}
               onChange={handlePasswordChange}
               onKeyPress={handleKeyPress}
@@ -271,16 +285,12 @@ const Signup = () => {
             size="large"
             color="secondary"
             className={classes.signupBtn}
-            onClick={handleSignup}
+            onClick={handleSubmit(handleSignup)}
             disabled={state.isButtonDisabled}
           >
             Signup
           </Button>
         </CardActions>
-        {/* <div className={styles.linkToSignUp}>
-          If you don't have an account{' '}
-          <Link href="./sign-up">Sign up here.</Link>
-        </div> */}
       </Card>
     </form>
   );

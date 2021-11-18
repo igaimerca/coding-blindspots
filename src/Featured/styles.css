@@ -42,3 +42,35 @@
 .inactive {
   background-color: #ff4d4f;
 }
+.paginationButtons {
+  width: 100%;
+  height: 40px;
+  padding-left: -40px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+.paginationButtons a {
+  padding: 10px;
+  margin: 8px;
+  border-radius: 5px;
+  border: 1px solid black;
+  color: black;
+  cursor: pointer;
+}
+.paginationActive {
+  color: white !important;
+  background-color: black;
+}
+
+.paginationButtons a:hover {
+  color: white;
+  background-color: black;
+}
+.previousButton {
+}
+.nextButton {
+}
+.paginationDisabled {
+}

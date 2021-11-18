@@ -6,6 +6,11 @@ interface CssExports {
   'container': string;
   'inactive': string;
   'languagesCount': string;
+  'nextButton': string;
+  'paginationActive': string;
+  'paginationButtons': string;
+  'paginationDisabled': string;
+  'previousButton': string;
   'snippet': string;
   'snippetContainer': string;
 }

@@ -15,11 +15,13 @@ import { store } from '../store';
 import { getSnippets } from '../services/api/snippets';
 import { searchSnippets } from '../services/api/search';
 import filterArray from '../shared/utils/group-by';
+import ReactPaginate from 'react-paginate';
 
 const Featured = () => {
   console.log('inside src/Featured/index.tsx');
   const [languages, setLanguages] = useState<any[]>([]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>('');
+  const [pageNumber, setPageNumber] = useState(0);
 
   const storeContext = useContext(store);
   const {
@@ -60,6 +62,7 @@ const Featured = () => {
   const inactiveRed = '#ff4d4f';
   const activeGreen = '#52c41a';
   const resetBlack = '#000000';
+
   const filterButtonsJSX = (
     <div className={styles.languagesCount}>
       {languages.map((lang) => (
@@ -88,6 +91,18 @@ const Featured = () => {
     ? snippets.filter((s: Snippet) => s.language === selectedLanguage)
     : snippets;
 
+  const snippetsPerPage = 12;
+  const pagesVisited = pageNumber * snippetsPerPage;
+  const paginatedSnippets = displayedSnips?.slice(
+    pagesVisited,
+    pagesVisited + snippetsPerPage
+  );
+  const pageCount = Math.ceil(displayedSnips.length / snippetsPerPage);
+  const changePage = ({ selected }: any) => {
+    setPageNumber(selected);
+    window.scrollTo(500, 0);
+  };
+
   let snippetsLength;
   if (location.search) {
     snippetsLength =
@@ -111,6 +126,8 @@ const Featured = () => {
         {filterButtonsJSX}
       </div>
 
+      <h3>Page {pageNumber + 1}</h3>
+
       <List
         grid={{
           gutter: 16,
@@ -120,7 +137,7 @@ const Featured = () => {
           xl: numSnippetsExtraLarge,
           xxl: numSnippetsExtraExtraLarge,
         }}
-        dataSource={displayedSnips || []}
+        dataSource={paginatedSnippets || []}
         renderItem={(snippet: Snippet) => (
           <List.Item>
             <Card
@@ -165,6 +182,19 @@ const Featured = () => {
             </Card>
           </List.Item>
         )}
+      />
+      <ReactPaginate
+        previousLabel={'Previous'}
+        nextLabel={'Next'}
+        pageCount={pageCount}
+        onPageChange={changePage}
+        containerClassName={styles.paginationButtons}
+        previousLinkClassName={styles.previousButton}
+        activeLinkClassName={styles.paginationActive}
+        nextLinkClassName={styles.nextButton}
+        disabledClassName={styles.paginationDisabled}
+        pageRangeDisplayed={pageCount}
+        marginPagesDisplayed={pageCount}
       />
     </div>
   );

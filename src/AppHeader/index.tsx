@@ -33,6 +33,8 @@ const getDefaultSelectedKeys = (pathname: string): Array<string> => {
     defaultSelectedKeys.push('4');
   } else if (includes(pathname, 'waitlist')) {
     defaultSelectedKeys.push('5');
+  } else if (includes(pathname, 'activity')) {
+    defaultSelectedKeys.push('6');
   }
 
   return defaultSelectedKeys;
@@ -131,8 +133,10 @@ const AppHeader = ({ location: { pathname } }: AppHeader) => {
         <Menu.Item key="">
           <Searchbar />
         </Menu.Item>
+        <Menu.Item key="6" className="activity">
+          <Link to="/featured">{userCookie + ' '}</Link>
+        </Menu.Item>
         <Menu.Item key="4" className="menu-login">
-          {userCookie + ' '}
           <Link onClick={() => handleLogout()} to="/featured">
             <LogoutOutlined />
             Logout

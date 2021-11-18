@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.0.6",
+    "@hookform/resolvers": "^2.8.3",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@reduxjs/toolkit": "^1.6.2",
@@ -37,6 +38,7 @@
     "react-codemirror2": "^7.1.0",
     "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
+    "react-hook-form": "^7.19.5",
     "react-hot-loader": "^4.12.20",
     "react-mde": "^8.3.0",
     "react-media": "^1.10.0",
@@ -52,7 +54,8 @@
     "redux-persist": "^6.0.0",
     "showdown": "^1.9.1",
     "testing": "^2.0.1",
-    "universal-cookie": "^4.0.4"
+    "universal-cookie": "^4.0.4",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -63,6 +66,7 @@
     "@types/lodash": "^4.14.149",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
+    "@types/react-paginate": "^7.1.1",
     "autoprefixer": "^9.7.6",
     "awesome-typescript-loader": "^5.2.1",
     "babel-cli": "^6.26.0",
