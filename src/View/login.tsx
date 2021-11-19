@@ -1,7 +1,6 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import RestClient from '../shared/rest';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Card from '@material-ui/core/Card';
@@ -9,10 +8,10 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
-import { useCookies } from 'react-cookie';
 import Cookies from 'universal-cookie';
 import { useHistory } from 'react-router-dom';
 import styles from './styles.css';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -81,9 +80,6 @@ const reducer = (state: State, action: Action): State => {
         isButtonDisabled: action.payload,
       };
     case 'loginSuccess':
-      console.log('in loginSuccess');
-      console.log(state);
-      console.log(action);
       return {
         ...state,
         helperText: action.payload,
@@ -104,6 +100,8 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const Login = () => {
+  const [error, setError] = useState('');
+
   const classes = useStyles();
 
   let history = useHistory();
@@ -115,16 +113,7 @@ const Login = () => {
       history.go(0);
     }
   };
-
-  // const [cookies, setCookie] = useCookies(["user"]);
-  // function handleCookie() {
-  //  console.log("about to set cookie");
-  //   setCookie("user", "gowtham", {      path: "/"    });
-  //  console.log("successfully set cookie");
-  // }
-
   const [state, dispatch] = useReducer(reducer, initialState);
-  // console.log("inside src/view/login.tsx");
 
   useEffect(() => {
     if (state.username.trim() && state.password.trim()) {
@@ -141,27 +130,19 @@ const Login = () => {
   }, [state.username, state.password]);
 
   const handleLogin = () => {
-    console.log('3 username is ' + state.username);
-    console.log('4 password is ' + state.password);
-    //cookies.set("user", "gowtham", { path: "/" }); // setting the cookie
-
     var credentials = {
       username: state.username,
       password: state.password,
     };
-    RestClient.post(`/api/v1/token/login`, credentials)
+    axios
+      .post(
+        `https://backend.interviewblindspots.com/displaycode/api/v1/token/login`,
+        credentials
+      )
       .then((tokenresponse) => {
-        console.log(
-          'response from django login server. Good ' + tokenresponse.auth_token
-        );
-
-        //This also works.
-        // handleCookie();
-
-        //This works fine.
         const cookies = new Cookies();
+        cookies.set('token', tokenresponse.data.auth_token, { path: '/' });
         cookies.set('user', state.username, { path: '/' });
-        console.log(cookies.get('user')); // Pacman
 
         dispatch({
           type: 'loginSuccess',
@@ -170,12 +151,12 @@ const Login = () => {
 
         goToPreviousPath();
       })
-      .catch(() => {
-        //setLoaded(true);
-        console.log('failedddddd..');
+      .catch((error) => {
+        const errorResponse = Object.values(error.response.data)[0];
+        setError(`${errorResponse}`);
         dispatch({
-          type: 'loginFailed',
-          payload: 'Login Failed',
+          type: 'setIsError',
+          payload: true,
         });
       });
   };
@@ -228,7 +209,7 @@ const Login = () => {
               label="Password"
               placeholder="Password"
               margin="normal"
-              helperText={state.helperText}
+              helperText={error}
               onChange={handlePasswordChange}
               onKeyPress={handleKeyPress}
             />

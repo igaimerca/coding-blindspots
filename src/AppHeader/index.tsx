@@ -7,6 +7,7 @@ import {
   LogoutOutlined,
   QuestionCircleFilled,
   MailOutlined,
+  ProfileOutlined,
 } from '@ant-design/icons';
 import { includes } from 'lodash';
 import { Menu } from 'antd';
@@ -66,19 +67,19 @@ const AppHeader = ({ location: { pathname } }: AppHeader) => {
           <Menu.Item key="1">
             <Link to="/public">
               <StarFilled />
-              Featured reviews
+              {` Featured reviews`}
             </Link>
           </Menu.Item>
           <Menu.Item key="2">
             <Link to="/about">
               <QuestionCircleFilled />
-              How it works
+              {` How it works`}
             </Link>
           </Menu.Item>
           <Menu.Item key="3" className="menu-create">
             <Link to="/create">
               <PlusCircleFilled />
-              New submission
+              {` New submission`}
             </Link>
           </Menu.Item>
           <Menu.Item key="">
@@ -87,13 +88,13 @@ const AppHeader = ({ location: { pathname } }: AppHeader) => {
           <Menu.Item key="4" className="menu-login">
             <Link to="/login">
               <LoginOutlined />
-              Login/Signup
+              {` Login/Signup`}
             </Link>
           </Menu.Item>
           <Menu.Item key="5" className="menu-waitlist">
             <Link to="/waitlist">
               <MailOutlined />
-              Join Waitlist
+              {` Join Waitlist`}
             </Link>
           </Menu.Item>
         </Menu>
@@ -115,37 +116,39 @@ const AppHeader = ({ location: { pathname } }: AppHeader) => {
         <Menu.Item key="1">
           <Link to="/public">
             <StarFilled />
-            Featured reviews
+            {` Featured reviews`}
           </Link>
         </Menu.Item>
         <Menu.Item key="2">
           <Link to="/about">
             <QuestionCircleFilled />
-            How it works
+            {` How it works`}
           </Link>
         </Menu.Item>
         <Menu.Item key="3" className="menu-create">
           <Link to="/create">
             <PlusCircleFilled />
-            New submission
+            {` New submission`}
           </Link>
         </Menu.Item>
         <Menu.Item key="">
           <Searchbar />
         </Menu.Item>
         <Menu.Item key="6" className="activity">
-          <Link to="/featured">{userCookie + ' '}</Link>
+          <Link to="/activity">
+            <ProfileOutlined /> {' ' + userCookie}
+          </Link>
         </Menu.Item>
         <Menu.Item key="4" className="menu-login">
           <Link onClick={() => handleLogout()} to="/featured">
             <LogoutOutlined />
-            Logout
+            {` Logout`}
           </Link>
         </Menu.Item>
         <Menu.Item key="5" className="waitlist">
           <Link to="/waitlist">
             <MailOutlined />
-            Waitlist
+            {` Join Waitlist`}
           </Link>
         </Menu.Item>
       </Menu>

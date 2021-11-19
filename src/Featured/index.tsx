@@ -18,7 +18,6 @@ import filterArray from '../shared/utils/group-by';
 import ReactPaginate from 'react-paginate';
 
 const Featured = () => {
-  console.log('inside src/Featured/index.tsx');
   const [languages, setLanguages] = useState<any[]>([]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>('');
   const [pageNumber, setPageNumber] = useState(0);
@@ -59,6 +58,11 @@ const Featured = () => {
     return <PageLoad text="Loading Code Snippets…" />;
   }
 
+  const selectLanguage = (lang: any) => {
+    setSelectedLanguage(lang.language);
+    setPageNumber(0);
+  };
+
   const inactiveRed = '#ff4d4f';
   const activeGreen = '#52c41a';
   const resetBlack = '#000000';
@@ -68,7 +72,7 @@ const Featured = () => {
       {languages.map((lang) => (
         <div
           className={styles.badge}
-          onClick={() => setSelectedLanguage(lang.language)}
+          onClick={() => selectLanguage(lang)}
           key={lang.language}
         >
           <Badge
