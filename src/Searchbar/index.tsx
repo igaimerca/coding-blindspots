@@ -29,8 +29,6 @@ const reducer = (state: State, action: Action): State => {
         searchInput: action.payload,
       };
     case 'submitSearchInputSuccess':
-      console.log(state);
-      console.log(action);
       return {
         ...state,
         isError: false,
@@ -55,7 +53,6 @@ export const Searchbar = () => {
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log('inside src/Searchbar/input.tsx');
 
   const handleOnSearch = async () => {
     try {
@@ -83,7 +80,6 @@ export const Searchbar = () => {
   const handleSearchInputChange: React.ChangeEventHandler<HTMLInputElement> =
     async (event) => {
       const { value } = event.target;
-      console.log(`value`, value);
       dispatch({
         type: 'submitSearchInput',
         payload: value,

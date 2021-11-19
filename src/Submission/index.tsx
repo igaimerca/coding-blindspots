@@ -21,7 +21,6 @@ const Submission = () => {
   const [language, setLanguage] = useState<Language>(Language.JAVASCRIPT);
   const [submitting, setSubmitting] = useState(false);
 
-  console.log('inside src/Submission/index.tsx');
   const handleSubmission = (payload: Snippet) => {
     const { title, text } = payload;
     let parsedText = JSON.parse(text);
@@ -58,7 +57,6 @@ const Submission = () => {
   //Show Login page if not logged in.
   const cookies = new Cookies();
   const userCookie = cookies.get('user'); // Pacman
-  console.log('in Submission/index.tsx cookie is ' + userCookie);
   if (userCookie == null) {
     return (
       <div className={styles.container}>

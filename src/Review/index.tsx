@@ -56,7 +56,6 @@ const Review = ({ location }: ReviewProps) => {
   const [snippet, setSnippet] = useState<Snippet>();
   const [comments, setComments] = useState<Array<Comment>>([]);
   const snippetId = location.hash.slice(1);
-  console.log('inside src/Review/index.tsx', snippetId, location.hash);
 
   useEffect(() => {
     // todo use Promise.all
@@ -189,7 +188,7 @@ const Review = ({ location }: ReviewProps) => {
         <EditorOptions language={snippet.language} />
         <div className={styles.editor}>
           <Editor
-            key={`editor_${isToggled}`}
+            key={`editor_${isToggled}_${comments.length}`}
             text={parseIfJson(snippet.text)}
             language={snippet.language}
             // when user clicks on gutter, display comment widget if user is logged in, or display login modal id user is not logged in
