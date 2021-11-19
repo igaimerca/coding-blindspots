@@ -1,19 +1,17 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import RestClient from '../shared/rest';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
-import Cookies from 'universal-cookie';
-import { useHistory } from 'react-router-dom';
 import styles from './styles.css';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -90,9 +88,6 @@ const reducer = (state: State, action: Action): State => {
         isButtonDisabled: action.payload,
       };
     case 'signupSuccess':
-      console.log('in signupSuccess');
-      console.log(state);
-      console.log(action);
       return {
         ...state,
         helperText: action.payload,
@@ -113,6 +108,7 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const Signup = () => {
+  const [error, setError] = useState('');
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('Username is required'),
     //   .min(6, 'Username must be at least 6 characters')
@@ -138,13 +134,10 @@ const Signup = () => {
 
   const classes = useStyles();
 
-  let history = useHistory();
-  const goToPreviousPath = () => {
+  const redirectToMain = () => {
     const pathname = window.location.pathname;
     if (pathname === '/signup') {
-      history.go(-1);
-    } else {
-      history.go(0);
+      window.location.href = '/public';
     }
   };
 
@@ -164,30 +157,33 @@ const Signup = () => {
     }
   }, [state.username, state.password, state.email]);
 
-  const handleSignup = () => {
-    var credentials = {
+  const handleSignup = async () => {
+    let credentials = {
       username: state.username,
       password: state.password,
       email: state.email,
     };
-    RestClient.post(`/api/v1/users/`, credentials)
+
+    axios
+      .post(
+        `https://backend.interviewblindspots.com/displaycode/api/v1/users/`,
+        credentials
+      )
       .then((response) => {
-        console.log('response from django signup server. Good ' + response);
-
-        dispatch({
-          type: 'signupSuccess',
-          payload: 'signup Succeeded',
-        });
-
-        // goToPreviousPath();
-        // probably redirect to login?
+        if (response) {
+          dispatch({
+            type: 'signupSuccess',
+            payload: 'Signup succeeded',
+          });
+          redirectToMain();
+        }
       })
-      .catch(() => {
-        //setLoaded(true);
-        console.log('failedddddd..');
+      .catch((error) => {
+        const errorResponse = Object.values(error.response.data)[0];
+        setError(`${errorResponse}`);
         dispatch({
-          type: 'signupFailed',
-          payload: 'signup Failed',
+          type: 'setIsError',
+          payload: true,
         });
       });
   };
@@ -232,7 +228,7 @@ const Signup = () => {
           <div>
             <TextField
               required
-              //   error={state.isError}
+              error={state.isError}
               fullWidth
               id="username"
               type="username"
@@ -240,13 +236,12 @@ const Signup = () => {
               placeholder="Username"
               margin="normal"
               {...register('username')}
-              error={errors.username ? true : false}
               onChange={handleUsernameChange}
               onKeyPress={handleKeyPress}
             />
             <TextField
               required
-              //   error={state.isError}
+              error={state.isError}
               fullWidth
               id="email"
               type="email"
@@ -254,13 +249,12 @@ const Signup = () => {
               placeholder="Email"
               margin="normal"
               {...register('email')}
-              error={errors.email ? true : false}
               onChange={handleEmailChange}
               onKeyPress={handleKeyPress}
             />
             <TextField
               required
-              //   error={state.isError}
+              error={state.isError}
               fullWidth
               id="password"
               type="password"
@@ -268,8 +262,7 @@ const Signup = () => {
               placeholder="Password"
               margin="normal"
               {...register('password')}
-              error={errors.password ? true : false}
-              helperText={state.helperText}
+              helperText={error}
               onChange={handlePasswordChange}
               onKeyPress={handleKeyPress}
             />
